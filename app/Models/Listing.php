@@ -18,7 +18,11 @@ class Listing extends Model
 
     public function landlord()
     {
-        $this->belongsTo(landlord::class);
+        return $this->belongsTo(landlord::class);
+    }
+    public function favoriteTourists()
+    {
+        return $this->belongsToMany(Tourist::class,"favorite","listing_id","tourist_id");
     }
 
 }

@@ -48,14 +48,14 @@ class User extends Authenticatable
     }
     public function tourist()
     {
-        $this->hasOne(Tourist::class);
+        return $this->hasOne(Tourist::class);
     }
     public function landlord()
     {
-        $this->hasOne(Landlord::class);
+        return $this->hasOne(Landlord::class);
     }
     public function admin()
     {
-        $this->hadOne(Admin::class);
+        return $this->hasOne(Admin::class);
     }
 }

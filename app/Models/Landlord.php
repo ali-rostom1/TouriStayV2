@@ -19,12 +19,12 @@ class Landlord extends Model
 
     public function user()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
     public function listings()
     {
-        $this->hasMany(Listing::class);
+        return $this->hasMany(Listing::class);
     }
-    
+
 
 }

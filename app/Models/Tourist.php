@@ -19,7 +19,11 @@ class Tourist extends Model
 
     public function User()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
+    }
+    public function FavoriteListings()
+    {
+        return $this->belongsToMany(Listing::class,"favorites","tourist_id","listing_id");
     }
 
 }
