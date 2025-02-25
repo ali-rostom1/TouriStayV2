@@ -14,6 +14,7 @@ return new class extends Migration
     {
         DB::statement('
             CREATE TABLE admins (
+                admin_id SERIAL PRIMARY KEY
             ) INHERITS (users);
         ');
     }

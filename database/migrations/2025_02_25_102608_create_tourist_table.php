@@ -14,6 +14,7 @@ return new class extends Migration
     {
         DB::statement('
             CREATE TABLE tourists (
+                tourist_id SERIAL PRIMARY KEY,
                 passport_number VARCHAR(255) UNIQUE,
                 nationality VARCHAR(255) 
             ) INHERITS (users);
