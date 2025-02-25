@@ -14,11 +14,11 @@ return new class extends Migration
     {
         DB::statement('
             CREATE TABLE landlords (
-                landlord_id SERIAL PRIMARY KEY,
                 business_license VARCHAR(255) UNIQUE ,
                 property_count INTEGER
             ) INHERITS (users);
         ');
+        DB::statement('alter table landlords add primary key (id);');
     }
 
     /**

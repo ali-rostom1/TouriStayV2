@@ -5,6 +5,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
+
+
 return new class extends Migration
 {
     /**
@@ -14,9 +16,9 @@ return new class extends Migration
     {
         DB::statement('
             CREATE TABLE admins (
-                admin_id SERIAL PRIMARY KEY
             ) INHERITS (users);
         ');
+        DB::statement('alter table admins add primary key (id);');
     }
 
     /**
