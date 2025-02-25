@@ -13,6 +13,9 @@ class Tourist extends Model
         'passport_number',
         'nationality'
     ];
+    protected $hidden = [
+        'passport_number',
+    ];
 
     public function User()
     {

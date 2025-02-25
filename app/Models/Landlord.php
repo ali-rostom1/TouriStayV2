@@ -13,10 +13,18 @@ class Landlord extends Model
       'business_license',
       'property_count',  
     ];
+    protected $hidden = [
+        'business_license',
+    ];
 
     public function user()
     {
         $this->belongsTo(User::class);
     }
+    public function listings()
+    {
+        $this->hasMany(Listing::class);
+    }
+    
 
 }
