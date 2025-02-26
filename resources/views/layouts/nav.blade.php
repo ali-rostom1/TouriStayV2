@@ -5,9 +5,12 @@
         <x-application-logo class="block h-16 w-auto fill-current text-gray-800 " />
         <div class="flex items-center space-x-4">
             <a href="{{ route('home') }}" class="hover:text-yellow-300">Accueil</a>
-            <a href="" class="hover:text-yellow-300">Explorer</a>
-            <a href="#" class="hover:text-yellow-300">À propos</a>
-            <a href="#" class="hover:text-yellow-300">Contact</a>
+            <a href="{{ route('listings') }}" class="hover:text-yellow-300">Explorer</a>
+            @role('tourist')
+            <a href="{{ route('favorites')}}" class="hover:text-yellow-300">Favoris</a>
+            @else
+            <a href="{{ route('myListings')}}" class="hover:text-yellow-300">My Listings</a>
+            @endrole
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">

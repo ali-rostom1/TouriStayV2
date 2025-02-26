@@ -21,5 +21,6 @@
             <!-- Page Content -->
             {{ $slot }}
         </div>
+        @include('layouts.footer')
     </body>
 </html>

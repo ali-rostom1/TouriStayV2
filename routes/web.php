@@ -14,8 +14,25 @@ use Spatie\Permission\Models\Role;
 
 
 Route::get('/', function () {
-    return view('dashboard');
-})->middleware('auth')->name('home');
+    return view('home');
+})->middleware(['auth','role:tourist|landlord'])
+->name('home');
+
+
+Route::get('/listings',function(){
+    return view('listings');
+})->middleware(['auth','role:tourist|landlord'])
+->name('listings');
+
+Route::get('/favorites',function(){
+    return view('favorites');
+})->middleware(['auth','role:tourist'])
+->name('favorites');
+
+Route::get('/my_listings',function(){
+    return view('myListings');
+})->middleware(['auth','role:landlord'])
+->name('myListings');
 
 Route::middleware(['auth','role:tourist|landlord'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
