@@ -40,6 +40,15 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'tourist' => [
+            'driver' => 'session',
+            'provider' => 'tourists',
+        ],
+
+        'landlord' => [
+            'driver' => 'session',
+            'provider' => 'landlords',
+        ],
     ],
 
     /*
@@ -64,7 +73,15 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
+        'tourists' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Tourist::class,
+        ],
 
+        'landlords' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Landlord::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

@@ -4,17 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Permission\Traits\HasRoles;
 
 class Tourist extends Model
 {
-    use HasFactory;
+    use HasFactory,HasRoles;
     
     protected $fillable = [
+        "name",
+        "email",
+        "password",
         'passport_number',
         'nationality'
     ];
     protected $hidden = [
         'passport_number',
+        'password',
     ];
 
     public function User()

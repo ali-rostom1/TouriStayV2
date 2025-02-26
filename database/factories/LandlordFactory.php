@@ -2,13 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
 use Illuminate\Support\Str;
+
+
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tourist>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Landlord>
  */
-class TouristFactory extends Factory
+class LandlordFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,16 +19,16 @@ class TouristFactory extends Factory
      */
     public function definition(): array
     {
-        $user = User::where('role','tourist')->get()->random();
+        $user = User::where('role','landlord')->get()->random();
         return [
             'id' => $user->id,
             'name'=>$user->name,
             'email'=>$user->email,
             'password'=>$user->password,
-            'role'=> 'tourist',
+            'role'=>'landlord',
             'profile_picture'=>$user->profile_picture,
-            'passport_number' => fake()->randomNumber(6,true),
-            'nationality' => Str::random(8),
+            'business_license' => Str::random(8),
+            'property_count' => fake()->randomNumber(2),
         ];
     }
 }

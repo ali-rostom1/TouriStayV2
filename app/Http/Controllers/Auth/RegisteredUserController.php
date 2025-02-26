@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Landlord;
+use App\Models\Tourist;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -32,18 +34,35 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'user_type' => ['required'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        if($request->user_type === "tourist"){
+            $tourist = Tourist::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+            $user = User::find($tourist->id);
+            $user->assignRole("tourist");
+            event(new Registered($tourist));
+            
+            Auth::login($user);
+        }else{
+            $landlord = Landlord::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+            $user = User::find($landlord->id);
+            $user->assignRole("landlord");
+            event(new Registered($landlord));
 
-        event(new Registered($user));
+            Auth::login($user);
+        }
 
-        Auth::login($user);
+        
 
         return redirect(route('dashboard', absolute: false));
     }
