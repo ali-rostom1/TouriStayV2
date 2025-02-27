@@ -4,16 +4,7 @@
             <form class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="location">Destination</label>
-                    <select id="location" class="w-full px-3 py-2 border rounded-md">
-                        <option value="">Toutes les villes</option>
-                        <option value="casablanca">Casablanca</option>
-                        <option value="rabat">Rabat</option>
-                        <option value="marrakech">Marrakech</option>
-                        <option value="madrid">Madrid</option>
-                        <option value="barcelona">Barcelone</option>
-                        <option value="lisbon">Lisbonne</option>
-                        <option value="porto">Porto</option>
-                    </select>
+                    <input type="text" class="w-full px-3 py-2 border rounded-md" placeholder="Selectionnez une ville">
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="check-in">Arrivée</label>

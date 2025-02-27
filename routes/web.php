@@ -33,6 +33,10 @@ Route::get('/my_listings',function(){
     return view('myListings');
 })->middleware(['auth','role:landlord'])
 ->name('myListings');
+Route::get('/listings/publish',function(){
+    return view('publish');
+})->middleware(['auth','role:landlord'])
+->name('myListings');
 
 Route::middleware(['auth','role:tourist|landlord'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -14,6 +14,13 @@ class Listing extends Model
         'location',
         'startdate',
         'enddate',
+        'city',
+        'country',
+        'equipments',
+        'description',
+        'persons',
+        'rooms',
+        'type',
     ];
 
     public function landlord()
