@@ -21,14 +21,6 @@ Route::get('/', function () {
 ->name('home');
 
 
-Route::get('/listings',[ListingController::class,"index"])->middleware(['auth','role:tourist|landlord'])
-->name('listings');
-Route::get('/listings/publish',[ListingController::class,"create"])->middleware(['auth','role:landlord'])->name('listings.create');
-Route::post('/listings/store',[ListingController::class,"store"])->middleware(['auth','role:landlord'])->name('listings.store');
-Route::get('/listings/edit/{listing}',[ListingController::class,"edit"])->middleware(['auth','role:landlord'])->name('listings.edit');
-Route::get('/listings/show/{listing}',[ListingController::class,"show"])->middleware(['auth','role:landlord'])->name('listings.show');
-Route::put('/listings/update/{listing}',[ListingController::class,"update"])->middleware(['auth','role:landlord'])->name('listings.update');
-Route::delete('/listings/destroy/',[ListingController::class,"delete"])->middleware(['auth','role:landlord'])->name('listings.delete');
 
 
 Route::get('/favorites',function(){
@@ -45,11 +37,9 @@ Route::middleware(['auth','role:tourist|landlord|admin'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(["auth",'role:admin'])->group(function(){
-    Route::get('/dashboard',[AdminController::class,"index"])->name("dashboard");
+Route::middleware('auth')->group(function () {
+    Route::resource('listings', ListingController::class);
 });
-
-
 
 
 require __DIR__.'/auth.php';

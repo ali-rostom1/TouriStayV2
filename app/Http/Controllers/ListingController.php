@@ -18,6 +18,9 @@ class ListingController extends Controller
      */
     public function index(Request $request)
     {
+        if(Auth::user()->hasRole('admin')){
+            abort(403, 'You are not authorized to view listings.');
+        }
         $validatedData = $request->validate([
             'location' => 'nullable|string',
             'check-in' => 'nullable|date',
@@ -61,7 +64,6 @@ class ListingController extends Controller
         $listings = $query->with('images')->paginate($perPage);
         $total = $listings->total();
         $tourist = Tourist::with("favoriteListings")->find(Auth::user()->id);
-
         return view('listings',compact('listings','total','tourist'));
     }
 
@@ -70,7 +72,11 @@ class ListingController extends Controller
      */
     public function create()
     {
-        return view("lisCreate");
+        if(Auth::user()->hasRole('landlord')){
+            return view("lisCreate");
+        }
+        abort(403, 'You are not authorized to create a listing.');
+        
     }
 
     /**
@@ -78,7 +84,9 @@ class ListingController extends Controller
      */
     public function store(StoreListingRequest $request)
     {
-        
+        if(!Auth::user()->hasRole('landlord')){
+            abort(403, 'You are not authorized to create a listing.');
+        }
         
         $listing = Listing::create($request->validated());
 
@@ -96,28 +104,30 @@ class ListingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Listing $listing)
     {
-        $listing = Listing::find($id);
         return view("showListing",compact('listing'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Listing $listing)
     {
-        $listing = Listing::find($id);
-        return view("editListing",compact("listing"));
+        if(Auth::user()->hasRole('landlord')){
+            return view("editListing",compact("listing"));
+        }
+        abort(403, 'You are not authorized to edit a listing.');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreListingRequest $request, string $id)
+    public function update(StoreListingRequest $request, Listing $listing)
     {
-        $listing = Listing::find($id);
-    
+        if(!Auth::user()->hasRole('landlord')){
+            abort(403, 'You are not authorized to edit a listing.');
+        }
         if (!$listing) {
             return redirect()->route('listings.index')->with('error', 'Listing not found.');
         }
@@ -149,12 +159,24 @@ class ListingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Listing $listing)
     {
+        if ($listing->landlord_id !== Auth::user()->id || Auth::user()->hasRole("tourist")) {
+            abort(403, 'You are not authorized to delete a listing.');
+        }
+    
+        $listing->delete();
+    
+        return redirect(route('myListings'))
+            ->with('success', 'Listing deleted successfully.');
     }
     public function myListings()
     {
+        if(!Auth::user()->hasRole('landlord')){
+            abort(403, 'You are not authorized to see landlords listing.');
+        }
         $listings = Listing::where("landlord_id",Auth::user()->id)->paginate(4);
         return view('myListings',compact('listings'));
     }
+
 }

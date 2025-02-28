@@ -1,14 +1,14 @@
 <x-app-layout>
     <section class="bg-white shadow-md py-6">
         <div class="container mx-auto px-4">
-            <form class="grid grid-cols-1 md:grid-cols-4 gap-4" action="{{route('listings')}}" method="GET">
+            <form class="grid grid-cols-1 md:grid-cols-4 gap-4" action="{{route('listings.index')}}" method="GET">
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="location">Destination</label>
                     <input type="text" name="location" class="w-full px-3 py-2 border rounded-md" placeholder="Selectionnez une ville" value="{{ request('location') }}">
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="check-in">Arrivée</label>
-                    <input type="date" name="check-in" id="check-in" class="w-full px-3 py-2 border rounded-md" value="{{ request('check-in') }}"">
+                    <input type="date" name="check-in" id="check-in" class="w-full px-3 py-2 border rounded-md" value="{{ request('check-in') }}">
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="check-out">Départ</label>
@@ -30,7 +30,7 @@
                 <div class="flex flex-wrap gap-3">
                     <!-- Price Range -->
                     <div class="flex items-center">
-                        <a href="{{route('listings')}}" class="border-2 rounded px-2 py-1 text-sm" onchange="updateQueryParam('price',this.value)">
+                        <a href="{{route('listings.index')}}" class="border-2 rounded px-2 py-1 text-sm" onchange="updateQueryParam('price',this.value)">
                             Reset
                         </a>
                     </div>
@@ -79,9 +79,9 @@
             <div class="flex items-center mt-4 md:mt-0">
                 <span class="text-sm text-gray-600 mr-2">Afficher:</span>
                 <div class="flex space-x-2">
-                    <a href="{{ route('listings') }}?{{ http_build_query(array_merge(request()->query(), ['pag' => 4])) }}" class="px-3 py-1 {{request('pag') == 4 || !request('pag') ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}}  rounded text-sm">4</a>
-                    <a href="{{ route('listings') }}?{{ http_build_query(array_merge(request()->query(), ['pag' => 10])) }}" class="px-3 py-1 {{request('pag') == 10 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}} rounded text-sm ">10</a>
-                    <a href="{{ route('listings') }}?{{ http_build_query(array_merge(request()->query(), ['pag' => 15])) }}" class="px-3 py-1 {{request('pag') == 15 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}} rounded text-sm">15</a>
+                    <a href="{{ route('listings.index') }}?{{ http_build_query(array_merge(request()->query(), ['pag' => 4])) }}" class="px-3 py-1 {{request('pag') == 4 || !request('pag') ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}}  rounded text-sm">4</a>
+                    <a href="{{ route('listings.index') }}?{{ http_build_query(array_merge(request()->query(), ['pag' => 10])) }}" class="px-3 py-1 {{request('pag') == 10 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}} rounded text-sm ">10</a>
+                    <a href="{{ route('listings.index') }}?{{ http_build_query(array_merge(request()->query(), ['pag' => 15])) }}" class="px-3 py-1 {{request('pag') == 15 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}} rounded text-sm">15</a>
                 </div>
             </div>
         </div>
@@ -92,13 +92,19 @@
             <!-- Listing Card 1 -->
             <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
                 <div class="relative">
+                    @if(count($listing->images) > 0)
                     <img src="{{asset('storage/'. $listing->images[0]->path)}}" alt="{{$listing->name}}" class="w-full h-48 object-cover">
+                    @else
+                    <div class="bg-gray-100 h-48 rounded-lg flex items-center justify-center">
+                        <p class="text-gray-500">Aucune image disponible</p>
+                    </div>
+                    @endif
                     @role('tourist')
                     <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md hover:bg-yellow-300 transition">
-                        @if(true)
-                        <i class="far fa-heart text-gray-600"></i>
+                        @if($tourist->favoriteListings->contains('id', $listing->id))
+                        <i class="fa-solid fa-heart text-red-500"></i>
                         @else
-                        
+                        <i class="far fa-heart text-gray-600"></i>
                         @endif
                     </button>
                     @endrole

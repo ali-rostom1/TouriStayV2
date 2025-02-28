@@ -2,10 +2,10 @@
 <!-- Navbar -->
 <nav class="bg-blue-600 text-white shadow-lg">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-        <x-application-logo class="block h-16 w-auto fill-current text-gray-800 " />
+        <a href="{{route('home')}}" ><x-application-logo class="block h-16 w-auto fill-current text-gray-800 "/></a>
         <div class="flex items-center space-x-4">
             <a href="{{ route('home') }}" class="hover:text-yellow-300">Accueil</a>
-            <a href="{{ route('listings') }}" class="hover:text-yellow-300">Explorer</a>
+            <a href="{{ route('listings.index') }}" class="hover:text-yellow-300">Explorer</a>
             @role('tourist')
             <a href="{{ route('favorites')}}" class="hover:text-yellow-300">Favoris</a>
             @else

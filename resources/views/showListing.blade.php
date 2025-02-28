@@ -16,19 +16,25 @@
                         @if(count($listing->images) > 0)
                             <div class="grid grid-cols-4 gap-4">
                                 <div class="col-span-4 md:col-span-2 h-80">
-                                    <img src="{{ asset('storage/'. $listing->images[0]->path) }}" alt="{{ $listing->name }}" class="w-full h-full object-cover rounded-lg">
+                                    <a href="{{ asset('storage/'. $listing->images[0]->path) }}" data-fancybox="gallery" data-caption="{{ $listing->name }}">
+                                        <img src="{{ asset('storage/'. $listing->images[0]->path) }}" alt="{{ $listing->name }}" class="w-full h-full object-cover rounded-lg">
+                                    </a>
                                 </div>
                                 <div class="col-span-4 md:col-span-2 grid grid-cols-2 gap-4">
                                     @foreach($listing->images->slice(1, 4) as $image)
                                         <div class="h-38">
-                                            <img src="{{ asset('storage/'. $image->path) }}" alt="{{ $listing->name }}" class="w-full h-full object-cover rounded-lg">
+                                            <a href="{{ asset('storage/'. $image->path) }}" data-fancybox="gallery" data-caption="{{ $listing->name }}">
+                                                <img src="{{ asset('storage/'. $image->path) }}" alt="{{ $listing->name }}" class="w-full h-full object-cover rounded-lg">
+                                            </a>
                                         </div>
                                     @endforeach
                                     @if(count($listing->images) > 5)
                                         <div class="relative h-38">
-                                            <img src="{{ asset('storage/'. $listing->images[5]->path) }}" alt="{{ $listing->name }}" class="w-full h-full object-cover rounded-lg brightness-50">
+                                            <a href="{{ asset('storage/'. $listing->images[5]->path) }}" data-fancybox="gallery" data-caption="{{ $listing->name }}">
+                                                <img src="{{ asset('storage/'. $listing->images[5]->path) }}" alt="{{ $listing->name }}" class="w-full h-full object-cover rounded-lg brightness-50">
+                                            </a>
                                             <div class="absolute inset-0 flex items-center justify-center">
-                                                <button class="bg-white px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition">
+                                                <button class="bg-white px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition" onclick="openLightbox()">
                                                     Voir toutes les photos ({{ count($listing->images) }})
                                                 </button>
                                             </div>
@@ -158,15 +164,43 @@
             </div>
         </div>
     </div>
-
     <script>
+        function openLightbox() {
+            $('[data-fancybox="gallery"]').fancybox({
+                loop: true, 
+                buttons: [
+                    "zoom",
+                    "share",
+                    "slideShow",
+                    "fullScreen",
+                    "download",
+                    "thumbs",
+                    "close"
+                ],
+                animationEffect: "fade", 
+                transitionEffect: "fade", 
+                transitionDuration: 300, 
+                slideShow: {
+                    autoStart: false,
+                    speed: 2000
+                },
+                thumbs: {
+                    autoStart: true 
+                }
+            });
+        }
+    
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            openLightbox();
+        });
+    
         function confirmDelete(id) {
             const modal = document.getElementById('deleteModal');
             const deleteForm = document.getElementById('deleteForm');
             const cancelDelete = document.getElementById('cancelDelete');
             
-            deleteForm.action = `/listings/${id}`;
-            
+            deleteForm.action = `/listings/${id}/`;
             
             modal.classList.remove('hidden');
             
