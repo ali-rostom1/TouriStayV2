@@ -15,28 +15,9 @@
             <div>
                 <h3 class="text-lg font-bold mb-4">Liens rapides</h3>
                 <ul class="space-y-2">
-                    <li><a href="#" class="hover:text-yellow-300">Accueil</a></li>
-                    <li><a href="#" class="hover:text-yellow-300">Explorer</a></li>
-                    <li><a href="#" class="hover:text-yellow-300">À propos</a></li>
-                    <li><a href="#" class="hover:text-yellow-300">Contact</a></li>
-                </ul>
-            </div>
-            
-            <div>
-                <h3 class="text-lg font-bold mb-4">Hébergeurs</h3>
-                <ul class="space-y-2">
-                    <li><a href="#" class="hover:text-yellow-300">Devenir hôte</a></li>
-                    <li><a href="#" class="hover:text-yellow-300">Ressources</a></li>
-                    <li><a href="#" class="hover:text-yellow-300">Centre d'aide</a></li>
-                </ul>
-            </div>
-            
-            <div>
-                <h3 class="text-lg font-bold mb-4">Support</h3>
-                <ul class="space-y-2">
-                    <li><a href="#" class="hover:text-yellow-300">Centre d'aide</a></li>
-                    <li><a href="#" class="hover:text-yellow-300">Conditions d'utilisation</a></li>
-                    <li><a href="#" class="hover:text-yellow-300">Politique de confidentialité</a></li>
+                    <li><a href="{{route('home')}}" class="hover:text-yellow-300">Accueil</a></li>
+                    <li><a href="{{route('listings.index')}}" class="hover:text-yellow-300">Explorer</a></li>
+                    
                 </ul>
             </div>
         </div>

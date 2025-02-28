@@ -7,22 +7,21 @@
             
             <!-- Search Form -->
             <div class="bg-white p-4 rounded-lg shadow-md max-w-4xl">
-                <form class="flex flex-col md:flex-row gap-4">
-                    <div class="flex-grow">
+                <form class="grid grid-cols-1 md:grid-cols-4 gap-4" action="{{route('listings.index')}}" method="GET">
+                    <div>
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="location">Destination</label>
-                        <input type="text" class="w-full px-3 py-2 border rounded-md" placeholder="Selectionnez une ville">
-
+                        <input type="text" name="location" class="w-full px-3 py-2 border rounded-md" placeholder="Selectionnez une ville" value="{{ request('location') }}">
                     </div>
-                    <div class="flex-grow">
+                    <div>
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="check-in">Arrivée</label>
-                        <input type="date" id="check-in" class="w-full px-3 py-2 border rounded-md">
+                        <input type="date" name="check-in" id="check-in" class="w-full px-3 py-2 border rounded-md" value="{{ request('check-in') }}">
                     </div>
-                    <div class="flex-grow">
+                    <div>
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="check-out">Départ</label>
-                        <input type="date" id="check-out" class="w-full px-3 py-2 border rounded-md">
+                        <input type="date" name="check-out" id="check-out" class="w-full px-3 py-2 border rounded-md" value="{{ request('check-out') }}">
                     </div>
                     <div class="flex items-end">
-                        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-md font-medium hover:bg-blue-700 transition">Rechercher</button>
+                        <button type="submit" class="bg-blue-600 text-white w-full px-6 py-2 rounded-md font-medium hover:bg-blue-700 transition">Rechercher</button>
                     </div>
                 </form>
             </div>
@@ -39,7 +38,7 @@
                 <div class="p-4">
                     <h3 class="text-xl font-bold mb-2">Casablanca, Maroc</h3>
                     <p class="text-gray-600 mb-4">Découvrez la plus grande ville du Maroc et ses nombreuses attractions</p>
-                    <a href="#" class="text-blue-600 font-medium hover:text-blue-800">Explorer les logements <i class="fas fa-arrow-right ml-1"></i></a>
+                    <a href="{{route('listings.index') . "?location=casablanca"}}" class="text-blue-600 font-medium hover:text-blue-800">Explorer les logements <i class="fas fa-arrow-right ml-1"></i></a>
                 </div>
             </div>
             
@@ -49,7 +48,7 @@
                 <div class="p-4">
                     <h3 class="text-xl font-bold mb-2">Madrid, Espagne</h3>
                     <p class="text-gray-600 mb-4">Vivez l'ambiance festive de la capitale espagnole pendant le Mondial</p>
-                    <a href="#" class="text-blue-600 font-medium hover:text-blue-800">Explorer les logements <i class="fas fa-arrow-right ml-1"></i></a>
+                    <a href="{{route('listings.index') . "?location=madrid"}}" class="text-blue-600 font-medium hover:text-blue-800">Explorer les logements <i class="fas fa-arrow-right ml-1"></i></a>
                 </div>
             </div>
             
@@ -59,7 +58,7 @@
                 <div class="p-4">
                     <h3 class="text-xl font-bold mb-2">Lisbonne, Portugal</h3>
                     <p class="text-gray-600 mb-4">Profitez du charme unique de la capitale portugaise</p>
-                    <a href="#" class="text-blue-600 font-medium hover:text-blue-800">Explorer les logements <i class="fas fa-arrow-right ml-1"></i></a>
+                    <a href="{{route('listings.index') . "?location=lisbonne"}}" class="text-blue-600 font-medium hover:text-blue-800">Explorer les logements <i class="fas fa-arrow-right ml-1"></i></a>
                 </div>
             </div>
         </div>

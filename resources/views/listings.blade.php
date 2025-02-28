@@ -30,7 +30,7 @@
                 <div class="flex flex-wrap gap-3">
                     <!-- Price Range -->
                     <div class="flex items-center">
-                        <a href="{{route('listings.index')}}" class="border-2 rounded px-2 py-1 text-sm" onchange="updateQueryParam('price',this.value)">
+                        <a href="{{route('listings.index')}}" class="border-2 rounded px-2 py-1 text-sm">
                             Reset
                         </a>
                     </div>
