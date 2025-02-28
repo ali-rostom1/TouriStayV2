@@ -26,7 +26,7 @@ class Tourist extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function FavoriteListings()
+    public function favoriteListings()
     {
         return $this->belongsToMany(Listing::class,"favorites","tourist_id","listing_id");
     }

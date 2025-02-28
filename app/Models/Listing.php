@@ -10,6 +10,8 @@ class Listing extends Model
     use HasFactory;
 
     protected $fillable = [
+        'landlord_id',
+        'name',
         'price',
         'location',
         'startdate',
@@ -29,7 +31,11 @@ class Listing extends Model
     }
     public function favoriteTourists()
     {
-        return $this->belongsToMany(Tourist::class,"favorite","listing_id","tourist_id");
+        return $this->belongsToMany(Tourist::class,"favorites","listing_id","tourist_id");
+    }
+    public function images()
+    {
+        return $this->hasMany(Image::class);
     }
 
 }

@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\Tourist;
 use App\Models\User;
 use App\Models\Admin;
+use App\Models\Image;
+use App\Models\Listing;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,6 +18,5 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-        Admin::factory()->create();
     }
 }

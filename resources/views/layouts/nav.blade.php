@@ -10,7 +10,7 @@
             <a href="{{ route('favorites')}}" class="hover:text-yellow-300">Favoris</a>
             @else
             <a href="{{ route('myListings')}}" class="hover:text-yellow-300">My Listings</a>
-            <a href="{{ route('listing.publish')}}" class="hover:text-yellow-300">Publish</a>
+            <a href="{{ route('listings.create')}}" class="hover:text-yellow-300">Publish</a>
             @endrole
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
