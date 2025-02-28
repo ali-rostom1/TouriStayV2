@@ -119,14 +119,16 @@
                                 
                                 <!-- Actions -->
                                 <div class="space-y-3">
+                                    @role('landlord')
                                     <a href="{{ route('listings.edit', $listing->id) }}" class="block w-full bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition text-center">
                                         <i class="fas fa-edit mr-2"></i> Modifier
                                     </a>
-                                    
-                                    
+                                    @endrole
+                                    @role('landlord|admin')
                                     <button onclick="confirmDelete({{ $listing->id }})" class="block w-full bg-red-600 text-white px-4 py-2 rounded-md font-medium hover:bg-red-700 transition">
                                         <i class="fas fa-trash mr-2"></i> Supprimer
                                     </button>
+                                    @endrole
                                 </div>
                             </div>
                         </div>

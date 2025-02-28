@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolesPermissionController;
@@ -23,10 +24,7 @@ Route::get('/', function () {
 
 
 
-Route::get('/favorites',function(){
-    return view('favorites');
-})->middleware(['auth','role:tourist'])
-->name('favorites');
+Route::get('/toggleFavorite/{listing}',[FavoriteController::class,'toggleFavorite'])->middleware(['auth','role:tourist'])->name('favorite');
 
 Route::get('/my_listings',[ListingController::class,'myListings'])->middleware(['auth','role:landlord'])
 ->name('myListings');
@@ -39,6 +37,10 @@ Route::middleware(['auth','role:tourist|landlord|admin'])->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::resource('listings', ListingController::class);
+});
+Route::middleware('auth','role:admin')->group(function () {
+    Route::get("/dashboard",[AdminController::class,"index"])->name("dashboard");
+    Route::get("/admin/listings",[AdminController::class,"listings"])->name("admin.listings");
 });
 
 

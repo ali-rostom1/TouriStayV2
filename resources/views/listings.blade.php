@@ -100,13 +100,13 @@
                     </div>
                     @endif
                     @role('tourist')
-                    <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md hover:bg-yellow-300 transition">
+                    <a href="{{route('favorite',$listing->id)}}" class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md hover:bg-yellow-300 transition">
                         @if($tourist->favoriteListings->contains('id', $listing->id))
                         <i class="fa-solid fa-heart text-red-500"></i>
                         @else
                         <i class="far fa-heart text-gray-600"></i>
                         @endif
-                    </button>
+                    </a>
                     @endrole
                     <span class="absolute bottom-3 left-3 bg-blue-600 text-white px-2 py-1 rounded text-xs font-semibold">{{$listing->type}}</span>
                 </div>

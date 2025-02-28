@@ -161,14 +161,19 @@ class ListingController extends Controller
      */
     public function destroy(Listing $listing)
     {
-        if ($listing->landlord_id !== Auth::user()->id || Auth::user()->hasRole("tourist")) {
-            abort(403, 'You are not authorized to delete a listing.');
+        if ($listing->landlord_id == Auth::user()->id || Auth::user()->hasRole("admin")) {
+            $listing->delete();
+            if(Auth::user()->hasRole("admin")){
+                return redirect(route("admin.listings"))
+                        ->with('success', 'Listing deleted successfully.');
+            }else{
+                return redirect(route("myListings"))
+                        ->with('success', 'Listing deleted successfully.');
+            }
+            
         }
-    
-        $listing->delete();
-    
-        return redirect(route('myListings'))
-            ->with('success', 'Listing deleted successfully.');
+        abort(403, 'You are not authorized to delete a listing.');
+        
     }
     public function myListings()
     {

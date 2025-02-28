@@ -4,13 +4,17 @@
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
         <a href="{{route('home')}}" ><x-application-logo class="block h-16 w-auto fill-current text-gray-800 "/></a>
         <div class="flex items-center space-x-4">
+            @role('tourist|landlord')
             <a href="{{ route('home') }}" class="hover:text-yellow-300">Accueil</a>
             <a href="{{ route('listings.index') }}" class="hover:text-yellow-300">Explorer</a>
             @role('tourist')
-            <a href="{{ route('favorites')}}" class="hover:text-yellow-300">Favoris</a>
+            {{-- <a href="{{ route('favorites')}}" class="hover:text-yellow-300">Favoris</a>  --}}
             @else
             <a href="{{ route('myListings')}}" class="hover:text-yellow-300">My Listings</a>
             <a href="{{ route('listings.create')}}" class="hover:text-yellow-300">Publish</a>
+            @endrole
+            @else
+            <a href="{{ route('admin.listings')}}" class="hover:text-yellow-300">View listings</a>
             @endrole
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
