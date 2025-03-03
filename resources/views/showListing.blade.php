@@ -123,11 +123,30 @@
                                     <a href="{{ route('listings.edit', $listing->id) }}" class="block w-full bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition text-center">
                                         <i class="fas fa-edit mr-2"></i> Modifier
                                     </a>
+                                    <a href="" class="block w-full bg-green-600 text-white px-4 py-2 rounded-md font-medium hover:bg-green-700 transition text-center">
+                                        <i class="fas fa-calendar-alt mr-2"></i> Gérer les disponibilités
+                                    </a>
+                                    <a href="" class="block w-full bg-purple-600 text-white px-4 py-2 rounded-md font-medium hover:bg-purple-700 transition text-center">
+                                        <i class="fas fa-list-alt mr-2"></i> Voir les réservations
+                                    </a>
                                     @endrole
+                                    
+                                    @role('tourist')
+                                    <button onclick="openBookingModal()" class="block w-full bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition text-center">
+                                        <i class="fas fa-calendar-check mr-2"></i> Réserver
+                                    </button>
+                                    @endrole
+                                    
                                     @role('landlord|admin')
                                     <button onclick="confirmDelete({{ $listing->id }})" class="block w-full bg-red-600 text-white px-4 py-2 rounded-md font-medium hover:bg-red-700 transition">
                                         <i class="fas fa-trash mr-2"></i> Supprimer
                                     </button>
+                                    @endrole
+                                    
+                                    @role('admin')
+                                    <a href="" class="block w-full bg-gray-800 text-white px-4 py-2 rounded-md font-medium hover:bg-gray-900 transition text-center">
+                                        <i class="fas fa-chart-line mr-2"></i> Tableau de bord
+                                    </a>
                                     @endrole
                                 </div>
                             </div>
@@ -139,7 +158,7 @@
     </div>
     
     <!-- Delete Confirmation Modal -->
-    <div id="deleteModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+    <div id="deleteModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50">
         <div class="relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
             <div class="mt-3 text-center">
                 <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 text-red-600">
@@ -166,6 +185,68 @@
             </div>
         </div>
     </div>
+    
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50">
+        <div class="relative mx-auto p-5 border w-full max-w-lg shadow-lg rounded-md bg-white">
+            <button type="button" class="absolute top-3 right-3 text-gray-400 hover:text-gray-500" onclick="closeBookingModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="mt-3">
+                <h3 class="text-lg font-medium text-gray-900 text-center mb-4">Réserver {{ $listing->name }}</h3>
+                
+                <form id="bookingForm" method="POST" action="{{route('test')}}">
+                    @csrf
+                    <input type="hidden" name="listing_id" value="{{ $listing->id }}">
+                    
+                    <!-- Date selection -->
+                    <input onchange="calculatePrice()" type="text" class="block text-gray-700 text-sm font-bold mb-2" name="daterange" value="{{\Carbon\Carbon::parse($listing->startdate)->format('m/d/Y')}} - {{\Carbon\Carbon::parse($listing->enddate)->format('m/d/Y')}}" />
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="guests">Nombre de personnes</label>
+                        <input id="guests" name="guests" type="number" min="1" max="{{ $listing->persons }}" value="1" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required>
+                    </div>
+                    
+                    <!-- Price summary -->
+                    <div class="p-4 bg-gray-50 rounded-md mb-4">
+                        <div class="flex justify-between mb-2">
+                            <span data-price="{{$listing->price}}" id="perNightPrice">{{ $listing->price }}€ x <span id="nightsCount">0</span> nuits</span>
+                            <span id="subtotal">0€</span>
+                        </div>
+                        <div class="border-t pt-2 font-bold flex justify-between">
+                            <span>Total</span>
+                            <span id="total">0€</span>
+                            <input type="hidden" id="totalAmount" name="amount" value="0">
+                        </div>
+                    </div>
+                    
+                    <!-- Payment method -->
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Mode de paiement</label>
+                        <div class="flex space-x-4">
+                            <label class="flex items-center">
+                                <input type="radio" name="payment_method" value="stripe" class="mr-2" checked>
+                                <img src="{{ asset('images/stripe.png') }}" alt="Stripe" class="h-8">
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="payment_method" value="paypal" class="mr-2">
+                                <img src="{{ asset('images/paypal.png') }}" alt="PayPal" class="h-8">
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit button -->
+                    <div>
+                        <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition">
+                            Procéder au paiement
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
     <script>
         function openLightbox() {
             $('[data-fancybox="gallery"]').fancybox({
@@ -192,9 +273,9 @@
             });
         }
     
-    
         document.addEventListener('DOMContentLoaded', function() {
             openLightbox();
+            
         });
     
         function confirmDelete(id) {
@@ -216,5 +297,30 @@
                 }
             }
         }
+        function calculatePrice()
+        {
+            let x = $("input[name='daterange']").val();
+            x = x.split(" - ");
+            a = moment().format(x[1]);
+            b = moment().format(x[0]);
+            let numberOfNights  = moment(a).diff(moment(b),'days');
+            $("#nightsCount").html(numberOfNights);
+            let unitPrice =  $("#perNightPrice").attr("data-price");
+            var price = numberOfNights * unitPrice;
+            $('#subtotal').html(price + "€");
+            $('#total').html(price + "€");
+            $('#totalAmount').val(price);
+        }
+        
+        function openBookingModal() {
+            document.getElementById('bookingModal').classList.remove('hidden');
+        }
+        
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.add('hidden');
+        }
+        $('input[name="daterange"]').daterangepicker({
+            opens: 'left'
+        });
     </script>
 </x-app-layout>

@@ -44,4 +44,10 @@ Route::middleware('auth','role:admin')->group(function () {
 });
 
 
+Route::post("/test",function(){
+    return 'hello';
+})->name("test");
+
+
+
 require __DIR__.'/auth.php';
