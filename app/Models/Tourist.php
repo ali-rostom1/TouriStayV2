@@ -30,5 +30,8 @@ class Tourist extends Model
     {
         return $this->belongsToMany(Listing::class,"favorites","tourist_id","listing_id");
     }
-
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
 }

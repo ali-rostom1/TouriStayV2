@@ -201,7 +201,7 @@
                     <input type="hidden" name="listing_id" value="{{ $listing->id }}">
                     
                     <!-- Date selection -->
-                    <input onchange="calculatePrice()" type="text" class="block text-gray-700 text-sm font-bold mb-2" name="daterange" value="{{\Carbon\Carbon::parse($listing->startdate)->format('m/d/Y')}} - {{\Carbon\Carbon::parse($listing->enddate)->format('m/d/Y')}}" />
+                    <input onchange="calculatePrice()"  type="text" class="block text-gray-700 text-sm font-bold mb-2" name="daterange" value="{{\Carbon\Carbon::parse($listing->startdate)->format('m/d/Y')}} - {{\Carbon\Carbon::parse($listing->enddate)->format('m/d/Y')}}" />
                     
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="guests">Nombre de personnes</label>
@@ -275,7 +275,6 @@
     
         document.addEventListener('DOMContentLoaded', function() {
             openLightbox();
-            
         });
     
         function confirmDelete(id) {
@@ -296,9 +295,11 @@
                     modal.classList.add('hidden');
                 }
             }
-        }
+        }   
+        calculatePrice();
         function calculatePrice()
         {
+            console.log("hi")
             let x = $("input[name='daterange']").val();
             x = x.split(" - ");
             a = moment().format(x[1]);
@@ -306,7 +307,7 @@
             let numberOfNights  = moment(a).diff(moment(b),'days');
             $("#nightsCount").html(numberOfNights);
             let unitPrice =  $("#perNightPrice").attr("data-price");
-            var price = numberOfNights * unitPrice;
+            var price = (numberOfNights * unitPrice).toFixed(2);
             $('#subtotal').html(price + "€");
             $('#total').html(price + "€");
             $('#totalAmount').val(price);
@@ -320,7 +321,12 @@
             document.getElementById('bookingModal').classList.add('hidden');
         }
         $('input[name="daterange"]').daterangepicker({
-            opens: 'left'
+            opens: 'left',
+            minDate: "{{Carbon\Carbon::parse($listing->startdate)->format("m/d/Y")}}",
+            maxDate: "{{Carbon\Carbon::parse($listing->enddate)->format("m/d/Y")}}",
+            isInvalidDate: function(date) {
+                
+            }
         });
     </script>
 </x-app-layout>
