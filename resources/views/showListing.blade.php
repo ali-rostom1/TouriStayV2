@@ -207,7 +207,8 @@
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="guests">Nombre de personnes</label>
                         <input id="guests" name="guests" type="number" min="1" max="{{ $listing->persons }}" value="1" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" required>
                     </div>
-                    
+
+                    </div>
                     <!-- Price summary -->
                     <div class="p-4 bg-gray-50 rounded-md mb-4">
                         <div class="flex justify-between mb-2">
@@ -320,13 +321,31 @@
         function closeBookingModal() {
             document.getElementById('bookingModal').classList.add('hidden');
         }
+        reservationDates = [
+            @foreach($listing->reservations as $reservation)
+                "{{ Carbon\Carbon::parse($reservation->startdate)->format("m/d/Y") . " - " .  Carbon\Carbon::parse($reservation->enddate)->format("m/d/Y")}}" ,
+            @endforeach
+        ];
+        resDates = [];
+        $.map(reservationDates, function (element) {
+            element = element.split(" - ")
+            element = $.map(element, function(el){
+                return Date.parse(el);
+            });
+            resDates.push(element);
+        });
         $('input[name="daterange"]').daterangepicker({
             opens: 'left',
             minDate: "{{Carbon\Carbon::parse($listing->startdate)->format("m/d/Y")}}",
             maxDate: "{{Carbon\Carbon::parse($listing->enddate)->format("m/d/Y")}}",
             isInvalidDate: function(date) {
-                
+                for(resDate of resDates){
+                    if(date <= resDate[1] && date >=resDate[0]){
+                        return true;
+                    }
+                }
             }
         });
+        
     </script>
 </x-app-layout>
