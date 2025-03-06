@@ -99,4 +99,20 @@
             </div>
         </div>
     </section>
+    <script>
+        @if(Session::has('success'))
+            Swal.fire({
+                title: "success",
+                text: "Reservation placed successfully",
+                icon: "success"
+            });
+        @elseif(Session::has('error'))
+            Swal.fire({
+                title: "Reservation Canceled",
+                text: "{{Session::get('error')}}",
+                icon: "error"
+            });
+        @endif
+        
+    </script>
 </x-app-layout>

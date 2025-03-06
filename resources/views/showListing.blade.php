@@ -185,6 +185,9 @@
             </div>
         </div>
     </div>
+    @if(Session::has('error'))
+            <p class="alert alert-info">{{ Session::get('message') }}</p>
+    @endif
     
     <!-- Booking Modal -->
     <div id="bookingModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50">
@@ -192,13 +195,12 @@
             <button type="button" class="absolute top-3 right-3 text-gray-400 hover:text-gray-500" onclick="closeBookingModal()">
                 <i class="fas fa-times"></i>
             </button>
-            
             <div class="mt-3">
                 <h3 class="text-lg font-medium text-gray-900 text-center mb-4">Réserver {{ $listing->name }}</h3>
-                
-                <form id="bookingForm" method="POST" action="{{route('test')}}">
+                <form id="bookingForm" method="GET" action="{{route('processTransaction')}}">
                     @csrf
                     <input type="hidden" name="listing_id" value="{{ $listing->id }}">
+                    <input type="hidden" name="tourist_id" value="{{ auth()->user()->id }}">
                     
                     <!-- Date selection -->
                     <input onchange="calculatePrice()"  type="text" class="block text-gray-700 text-sm font-bold mb-2" name="daterange" value="{{\Carbon\Carbon::parse($listing->startdate)->format('m/d/Y')}} - {{\Carbon\Carbon::parse($listing->enddate)->format('m/d/Y')}}" />
@@ -218,7 +220,7 @@
                         <div class="border-t pt-2 font-bold flex justify-between">
                             <span>Total</span>
                             <span id="total">0€</span>
-                            <input type="hidden" id="totalAmount" name="amount" value="0">
+                            <input type="hidden" id="totalAmount" name="price" value="0">
                         </div>
                     </div>
                     
@@ -227,11 +229,11 @@
                         <label class="block text-gray-700 text-sm font-bold mb-2">Mode de paiement</label>
                         <div class="flex space-x-4">
                             <label class="flex items-center">
-                                <input type="radio" name="payment_method" value="stripe" class="mr-2" checked>
+                                <input type="radio" name="payment_method" value="stripe" class="mr-2" disabled>
                                 <img src="{{ asset('images/stripe.png') }}" alt="Stripe" class="h-8">
                             </label>
                             <label class="flex items-center">
-                                <input type="radio" name="payment_method" value="paypal" class="mr-2">
+                                <input type="radio" name="payment_method" value="paypal" class="mr-2" checked>
                                 <img src="{{ asset('images/paypal.png') }}" alt="PayPal" class="h-8">
                             </label>
                         </div>
@@ -300,7 +302,6 @@
         calculatePrice();
         function calculatePrice()
         {
-            console.log("hi")
             let x = $("input[name='daterange']").val();
             x = x.split(" - ");
             a = moment().format(x[1]);

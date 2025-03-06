@@ -10,7 +10,7 @@ class Reservation extends Model
     use HasFactory;
     protected $fillable = [
         'tourist_id',
-        'lisitng_id',
+        'listing_id',
         'startdate',
         'enddate',
         'price',
@@ -24,5 +24,8 @@ class Reservation extends Model
     {
         return $this->belongsTo(Listing::class);
     }
-    
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
+    }
 }

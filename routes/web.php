@@ -3,7 +3,9 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\RolesPermissionController;
 use App\Models\Admin;
 use App\Models\Tourist;
@@ -48,6 +50,11 @@ Route::post("/test",function(){
     return 'hello';
 })->name("test");
 
+Route::get('create-transaction', [PaypalController::class, 'createTransaction'])->name('createTransaction');
+Route::get('process-transaction', [PaypalController::class, 'processTransaction'])->name('processTransaction');
+Route::get('success-transaction', [PaypalController::class, 'successTransaction'])->name('successTransaction');
+Route::get('cancel-transaction', [PaypalController::class, 'cancelTransaction'])->name('cancelTransaction');
+Route::get('reservation-store',[ReservationController::class, 'store'])->name('reservation.store');
 
 
 require __DIR__.'/auth.php';
