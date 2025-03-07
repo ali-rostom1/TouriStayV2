@@ -12,9 +12,12 @@
             @else
             <a href="{{ route('myListings')}}" class="hover:text-yellow-300">My Listings</a>
             <a href="{{ route('listings.create')}}" class="hover:text-yellow-300">Publish</a>
+            <a href="{{ route('myReservations')}}" class="hover:text-yellow-300">Reservations</a>
             @endrole
             @else
             <a href="{{ route('admin.listings')}}" class="hover:text-yellow-300">View listings</a>
+            <a href="{{ route('reservations.index')}}" class="hover:text-yellow-300">View Reservations</a>            
+            <a href="{{ route('transactions.index')}}" class="hover:text-yellow-300">View Transactions</a>            
             @endrole
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">

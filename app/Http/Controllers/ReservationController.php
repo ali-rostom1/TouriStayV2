@@ -7,6 +7,7 @@ use App\Http\Requests\ReservationRequest;
 use App\Models\Reservation;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class ReservationController extends Controller
@@ -28,5 +29,21 @@ class ReservationController extends Controller
         return redirect()
                 ->intended()
                 ->with('success', 'Transaction complete.');
+    }
+
+    public function myReservations()
+    {
+
+        $reservations = Reservation::with('tourist','listing')
+        ->whereHas('listing',function($q){
+            $q->where("landlord_id",Auth::user()->id);
+        })
+        ->paginate(10);
+        return view("reservations",compact('reservations'));
+    }
+    public function index()
+    {
+        $reservations = Reservation::with('tourist','listing')->paginate(10);
+        return view('admin.allReservations',compact('reservations'));
     }
 }
