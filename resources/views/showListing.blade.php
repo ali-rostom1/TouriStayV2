@@ -203,7 +203,7 @@
                     <input type="hidden" name="tourist_id" value="{{ auth()->user()->id }}">
                     
                     <!-- Date selection -->
-                    <input onchange="calculatePrice()"  type="text" class="block text-gray-700 text-sm font-bold mb-2" name="daterange" value="{{\Carbon\Carbon::parse($listing->startdate)->format('m/d/Y')}} - {{\Carbon\Carbon::parse($listing->enddate)->format('m/d/Y')}}" />
+                    <input onchange="calculatePrice()"  type="text" class="block text-gray-700 text-sm font-bold mb-2" name="datefilter"  required/>
                     
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="guests">Nombre de personnes</label>
@@ -299,14 +299,13 @@
                 }
             }
         }   
-        calculatePrice();
         function calculatePrice()
         {
-            let x = $("input[name='daterange']").val();
+            let x = $("input[name='datefilter']").val();
             x = x.split(" - ");
             a = moment().format(x[1]);
             b = moment().format(x[0]);
-            let numberOfNights  = moment(a).diff(moment(b),'days');
+            let numberOfNights  = moment(a).diff(moment(b),'days') + 1;
             $("#nightsCount").html(numberOfNights);
             let unitPrice =  $("#perNightPrice").attr("data-price");
             var price = (numberOfNights * unitPrice).toFixed(2);
@@ -335,7 +334,8 @@
             });
             resDates.push(element);
         });
-        $('input[name="daterange"]').daterangepicker({
+        $('input[name="datefilter"]').daterangepicker({
+            autoUpdateInput: false,
             opens: 'left',
             minDate: "{{Carbon\Carbon::parse($listing->startdate)->format("m/d/Y")}}",
             maxDate: "{{Carbon\Carbon::parse($listing->enddate)->format("m/d/Y")}}",
@@ -347,6 +347,15 @@
                 }
             }
         });
-        
+        $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+            calculatePrice();
+        });
+
+        $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+            calculatePrice();
+        });
+                
     </script>
 </x-app-layout>

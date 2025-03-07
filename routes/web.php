@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
@@ -46,9 +47,7 @@ Route::middleware('auth','role:admin')->group(function () {
 });
 
 
-Route::post("/test",function(){
-    return 'hello';
-})->name("test");
+Route::get("/test",[MailController::class,"sendReservationMail"])->name("test");
 
 Route::get('create-transaction', [PaypalController::class, 'createTransaction'])->name('createTransaction');
 Route::get('process-transaction', [PaypalController::class, 'processTransaction'])->name('processTransaction');

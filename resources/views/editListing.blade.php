@@ -153,11 +153,10 @@
                                 <input type="hidden" name="deleted_images" id="deleted-images">
                             </div>
                         </div>
-                        
                         <!-- Availability -->
                         <div class="border-b pb-6">
                             <h3 class="text-lg font-semibold text-gray-700 mb-4">Disponibilité</h3>
-                            
+                            @if(!count($listing->reservations))
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-gray-700 text-sm font-bold mb-2" for="available_from">Disponible à partir de</label>
@@ -168,6 +167,9 @@
                                     <input type="date" name="enddate" id="available_to" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" value="{{ \Carbon\Carbon::parse($listing->enddate)->format('Y-m-d') }}" required>
                                 </div>
                             </div>
+                            @else
+                            <div class="text-red-700">can't Modify listing due to reservations placed</div>
+                            @endif
                         </div>
                         
                         <div class="flex justify-end">

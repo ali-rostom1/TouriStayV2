@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ReservationPlaced;
 use App\Http\Requests\ReservationRequest;
 use App\Models\Reservation;
 use App\Models\Transaction;
@@ -22,7 +23,8 @@ class ReservationController extends Controller
         $transaction->reservation()->create($request->all());
         
         $transaction->save();
-        
+        event(new ReservationPlaced($transaction));
+
         return redirect()
                 ->intended()
                 ->with('success', 'Transaction complete.');

@@ -19,7 +19,7 @@ class ReservationRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge(Session::get('reservation_data'));
-        $dates = explode(' - ',$this->get("daterange"));
+        $dates = \explode(' - ',$this->get("datefilter"));
         $startdate = Carbon::parse($dates[0])->format("Y-m-d");
         $enddate = Carbon::parse($dates[1])->format("Y-m-d");
         $this->merge([
