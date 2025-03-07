@@ -52,12 +52,15 @@
                                                 <a href="{{ route('listings.show', $listing->id) }}" class="w-8 h-8 rounded-full flex items-center justify-center text-blue-600 hover:bg-blue-100 mx-1">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
+                                                
+                                                @if(!count($listing->reservations))
                                                 <a href="{{ route('listings.edit', $listing->id) }}" class="w-8 h-8 rounded-full flex items-center justify-center text-yellow-600 hover:bg-yellow-100 mx-1">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                                 <button onclick="confirmDelete({{ $listing->id }})" class="w-8 h-8 rounded-full flex items-center justify-center text-red-600 hover:bg-red-100 mx-1">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

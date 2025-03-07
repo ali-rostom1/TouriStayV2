@@ -177,9 +177,6 @@ class ListingController extends Controller
     }
     public function myListings()
     {
-        if(!Auth::user()->hasRole('landlord')){
-            abort(403, 'You are not authorized to see landlords listing.');
-        }
         $listings = Listing::where("landlord_id",Auth::user()->id)->paginate(4);
         return view('myListings',compact('listings'));
     }
